@@ -1,0 +1,53 @@
+import pandas as pd
+
+
+
+data = {
+    'Order ID': [1, 2, 3, 4, 5],
+    'Product': ['USB-C Charger', 'Bose Headphones', 'Macbook Pro', 'USB-C Charger', 'ThinkPad Laptop'],
+    'Quantity Ordered': [2, 1, 1, 3, 1],
+    'Price Each': [19.99, 99.99, 1700.00, 19.99, 999.99],
+    'Order Date': ['2023-01-02 13:14:00', '2023-02-04 10:25:00', '2023-01-15 08:34:00', '2023-03-03 11:40:00', '2023-03-12 09:00:00'],
+    'Purchase Address': [
+        '123 Cherry St, Seattle, WA',
+        '456 Apple Rd, Dallas, TX',
+        '789 Banana Ave, Boston, MA',
+        '321 Peach Dr, New York, NY',
+        '654 Grape Blvd, Chicago, IL'
+    ]
+}
+
+
+df = pd.DataFrame(data)
+
+
+df['Order Date'] = pd.to_datetime(df['Order Date'])
+
+
+df.to_csv('sales_data.csv', index=False)
+
+print(" Sample sales_data.csv created successfully!")
+
+
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+
+df = pd.read_csv('sales_data.csv')
+
+
+df['Sales'] = df['Quantity Ordered'] * df['Price Each']
+
+
+product_sales = df.groupby('Product').sum(numeric_only=True)['Sales']
+
+
+product_sales.plot(kind='bar', color='cornflowerblue')
+plt.title("Total Sales by Product")
+plt.ylabel("Sales ($)")
+plt.xlabel("Product")
+plt.xticks(rotation=45)
+plt.grid(axis='y')
+plt.tight_layout()
+plt.show()
